@@ -33,7 +33,10 @@ class TestHuggingFaceLoader(unittest.TestCase):
         self.loader.model.device = "cpu"
         
         # Mock tokenizer encoding
-        self.loader.tokenizer.return_value = {"input_ids": torch.tensor([[1, 2, 3]])}
+        mock_inputs = MagicMock()
+        mock_inputs.input_ids = torch.tensor([[1, 2, 3]])
+        mock_inputs.to.return_value = mock_inputs
+        self.loader.tokenizer.return_value = mock_inputs
         
         # Mock model generation
         mock_output = MagicMock()
