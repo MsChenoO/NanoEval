@@ -13,6 +13,19 @@ class SmallModelEvaluationPipeline:
         self.loader = self._create_loader()
         self.evaluators: List[Evaluator] = [] 
 
+    def _load_config(self, path: str) -> Dict[str, Any]:
+        """Load YAML configuration"""
+        with open(path, 'r') as f:
+            return yaml.safe_load(f)
+
+    def _create_loader(self) -> ModelLoader:
+        """Initialize the configured model loader backend"""
+        loader_type = self.config.get('loader', 'huggingface')
+        if loader_type == 'huggingface':
+            return HuggingFaceLoader()
+        # Placeholder for other loaders (GGUF, etc.)
+        raise ValueError(f"Unsupported loader type: {loader_type}")
+
     def register_evaluator(self, evaluator: Evaluator):
         """Add an evaluator to the pipeline"""
         self.evaluators.append(evaluator)
