@@ -1,0 +1,10 @@
+{"prompt": "Write a python function to calculate the fibonacci sequence", "category": "coding", "expected_content": ["def", "fibonacci", "return"]}
+{"prompt": "Explain the theory of relativity to a 5 year old", "category": "explanation", "expected_content": ["gravity", "time", "einstein"]}
+{"prompt": "Give me a recipe for chocolate chip cookies", "category": "creative", "expected_content": ["flour", "sugar", "chocolate", "bake"]}
+{"prompt": "What is the capital of France?", "category": "knowledge", "expected_content": ["paris"]}
+{"prompt": "Write a haiku about winter", "category": "creative", "expected_content": ["snow", "cold", "white"]}
+{"prompt": "How do I change a tire on a car?", "category": "advice", "expected_content": ["jack", "lug nuts", "spare"]}
+{"prompt": "Translate 'Hello, how are you?' to Spanish", "category": "translation", "expected_content": ["hola", "como", "estas"]}
+{"prompt": "Summarize the plot of Romeo and Juliet", "category": "summarization", "expected_content": ["romeo", "juliet", "verona", "love"]}
+{"prompt": "What are the health benefits of eating apples?", "category": "health", "expected_content": ["fiber", "vitamin", "antioxidant"]}
+{"prompt": "Write a SQL query to select all users from a table", "category": "coding", "expected_content": ["select", "from", "users"]}

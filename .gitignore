@@ -158,7 +158,15 @@ data/
 logs/
 results/
 reports/
-*.jsonl
+
+# Benchmarks (Crucial for the framework - do NOT ignore)
+!benchmarks/
+!benchmarks/*.jsonl
+
+# Ignore generated output files specifically
+results/*.jsonl
+reports/*.jsonl
+*.log
 *.csv
 
 # OS specific

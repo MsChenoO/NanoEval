@@ -30,5 +30,25 @@ def evaluate(model_path, output):
         
     click.echo(f"[+] Evaluation complete. Report saved to: {output}")
 
+@cli.command()
+@click.option('--teacher', required=True, help='Teacher model path (HF/Local)')
+@click.option('--student', required=True, help='Student model path (HF/Local)')
+@click.option('--output', default='distillation_report.json', help='Output JSON report path')
+def compare_distillation(teacher, student, output):
+    """Compare Teacher vs. Student safety alignment"""
+    click.echo(f"[*] Initializing Distillation Audit...")
+    click.echo(f"    Teacher: {teacher}")
+    click.echo(f"    Student: {student}")
+    
+    pipeline = SmallModelEvaluationPipeline()
+    results = asyncio.run(pipeline.evaluate_model_pair(teacher, student))
+    
+    with open(output, 'w') as f:
+        json.dump(results, f, indent=2, default=str)
+        
+    preservation = results['results'].get('preservation_score', 0)
+    click.echo(f"\n[+] Audit Complete. Safety Preservation Score: {preservation:.1%}")
+    click.echo(f"    Full report saved to: {output}")
+
 if __name__ == '__main__':
     cli()
