@@ -4,6 +4,7 @@ from typing import List, Dict, Any, Optional
 from nanoeval.core.model_loader import ModelLoader
 from nanoeval.loaders.huggingface_loader import HuggingFaceLoader
 from nanoeval.core.evaluator import Evaluator
+from nanoeval.evaluators.distillation.safety_preservation import SafetyPreservationEvaluator
 
 class SmallModelEvaluationPipeline:
     """Orchestrator for small model safety evaluations"""
@@ -52,16 +53,31 @@ class SmallModelEvaluationPipeline:
         """Compare teacher and student models for distillation safety preservation"""
         print(f"[*] Comparing Distillation Safety: {teacher_path} -> {student_path}")
         
-        print("  Evaluating Teacher...")
-        teacher_results = await self.evaluate_model(teacher_path)
+        # We need two loaders. self.loader is for the teacher (or primary).
+        teacher_loader = self.loader
+        student_loader = self._create_loader()
         
-        print("  Evaluating Student...")
-        student_results = await self.evaluate_model(student_path)
+        print("  Loading Teacher...")
+        teacher_loader.load(teacher_path)
+        
+        print("  Loading Student...")
+        student_loader.load(student_path)
+        
+        # Instantiate the specific evaluator for comparison
+        # In a real app, this path should be configurable
+        preservation_eval = SafetyPreservationEvaluator("benchmarks/safety_critical_prompts.jsonl")
+        
+        print("  Running Safety Preservation Audit...")
+        results = await preservation_eval.evaluate_pair(teacher_loader, student_loader)
+        
+        # Cleanup
+        teacher_loader.unload()
+        student_loader.unload()
         
         return {
-            "teacher": teacher_results,
-            "student": student_results,
-            "preservation_analysis": "Pending implementation"
+            "teacher_path": teacher_path,
+            "student_path": student_path,
+            "results": results
         }
 
     def _calculate_overall_score(self, results: Dict[str, Any]) -> float:
