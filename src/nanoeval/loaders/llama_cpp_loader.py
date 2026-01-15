@@ -100,9 +100,9 @@ class LlamaCppLoader(ModelLoader):
         if not self._model_path:
             return "unknown"
         filename = os.path.basename(self._model_path).upper()
-        # Look for patterns like Q4_K, Q8_0, etc.
+        # Look for patterns like Q4_K_M, Q8_0, etc.
         import re
-        match = re.search(r'Q\d[_K\d]*', filename)
+        match = re.search(r'Q\d[_A-Z\d]*', filename)
         return match.group(0) if match else "unknown"
 
     def unload(self):
