@@ -3,6 +3,7 @@ import asyncio
 from typing import List, Dict, Any, Optional
 from nanoeval.core.model_loader import ModelLoader
 from nanoeval.loaders.huggingface_loader import HuggingFaceLoader
+from nanoeval.loaders.llama_cpp_loader import LlamaCppLoader
 from nanoeval.core.evaluator import Evaluator
 from nanoeval.evaluators.distillation.safety_preservation import SafetyPreservationEvaluator
 
@@ -24,7 +25,9 @@ class SmallModelEvaluationPipeline:
         loader_type = self.config.get('loader', 'huggingface')
         if loader_type == 'huggingface':
             return HuggingFaceLoader()
-        # Placeholder for other loaders (GGUF, etc.)
+        elif loader_type in ['gguf', 'llama_cpp']:
+            return LlamaCppLoader()
+        
         raise ValueError(f"Unsupported loader type: {loader_type}")
 
     def register_evaluator(self, evaluator: Evaluator):
